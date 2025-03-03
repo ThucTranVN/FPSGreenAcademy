@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde2d09f6925a47b0bd0272fc2dc3982, type: 3}
   m_Name: Machine
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 8273644743996777733, guid: f7199c092a872495881dfac428fd1003,
+    type: 3}
   Damage: 1
   FireRate: 0.2
   HitVFXPrefab: {fileID: 6171403221544575065, guid: 375a5bea1c37d4ffbb472623f9657140,
     type: 3}
+  IsAutomatic: 1
