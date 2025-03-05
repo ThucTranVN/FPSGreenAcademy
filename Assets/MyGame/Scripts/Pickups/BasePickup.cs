@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPickup : MonoBehaviour
+public abstract class BasePickup : MonoBehaviour
 {
-    [SerializeField] WeaponSO weaponSO;
     [SerializeField] float rotationSpeed = 100f;
-
     private const string PLAYER_TAG = "Player";
 
     private void Update()
@@ -20,12 +18,14 @@ public class WeaponPickup : MonoBehaviour
         {
             ActiveWeapon activeWeapon = other.GetComponentInChildren<ActiveWeapon>();
 
-            if(activeWeapon != null)
+            if (activeWeapon != null)
             {
-                activeWeapon.SwitchWeapon(weaponSO);
-
-                Destroy(this.gameObject);
+                OnPickup(activeWeapon);
             }
+ 
+            Destroy(this.gameObject);
         }
     }
+
+    protected abstract void OnPickup(ActiveWeapon activeWeapon);
 }

@@ -13,4 +13,5 @@ public class WeaponSO : ScriptableObject
     public bool IsCanZoom = false;
     public float ZoomAmount = 0f;
     public float ZoomRotationSpeed = 0f;
+    public int MagazineSize = 12;
 }
