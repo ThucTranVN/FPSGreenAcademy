@@ -1,14 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
-
 public class ScreenHome : BaseScreen
 {
-    public TMP_Text userName;
-    public TMP_Text passWord;
-
     public override void Show(object data)
     {
         base.Show(data);

@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using StarterAssets;
 using UnityEngine;
 using Cinemachine;
-using TMPro;
 
 public class ActiveWeapon : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera playerFollowCamera;
     [SerializeField] Camera weaponCamera;
-    [SerializeField] GameObject zoomUI;
     [SerializeField] WeaponSO startingWeaponSO;
     [SerializeField] Animator animator;
-    [SerializeField] TMP_Text ammoText;
 
     private FirstPersonController firstPersonController;
     private StarterAssetsInputs starterAssetsInput;
@@ -55,12 +50,15 @@ public class ActiveWeapon : MonoBehaviour
             currentAmmo = currentWeaponSO.MagazineSize;
         }
 
-        ammoText.text = currentAmmo.ToString("D2");
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, currentAmmo);
+        }
     }
 
     public void SwitchWeapon(WeaponSO weaponSO)
     {
-        Debug.Log("Player pickup " + weaponSO.name);
+        //Debug.Log("Player pickup " + weaponSO.name);
 
         if (currentWeapon)
         {
@@ -102,18 +100,22 @@ public class ActiveWeapon : MonoBehaviour
 
         if (starterAssetsInput.zoom)
         {
-            Debug.Log("Zoom In");
             playerFollowCamera.m_Lens.FieldOfView = currentWeaponSO.ZoomAmount;
             weaponCamera.fieldOfView = currentWeaponSO.ZoomAmount;
-            zoomUI.SetActive(true);
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_ZOOM, true);
+            }
             firstPersonController.ChangeRotationSpeed(currentWeaponSO.ZoomRotationSpeed);
         }
         else
         {
-            Debug.Log("Zoom Out");
             playerFollowCamera.m_Lens.FieldOfView = defaultFOV;
             weaponCamera.fieldOfView = defaultFOV;
-            zoomUI.SetActive(false);
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_ZOOM, false);
+            }
             firstPersonController.ChangeRotationSpeed(defaultRotationSpeed);
         }
     }

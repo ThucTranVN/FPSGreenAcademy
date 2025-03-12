@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MyEnemyHealth : MonoBehaviour
 {
     [SerializeField] private Transform vfxPos;
     [SerializeField] private GameObject robotExplosionVFX;
-    [SerializeField] private int startingHealth = 3;
+    private int startingHealth;
 
     private int currentHealth;
 
     private void Awake()
     {
-        currentHealth = startingHealth;
+        if (DataManager.HasInstance)
+        {
+            startingHealth = DataManager.Instance.GetRobotStartingHealth();
+            currentHealth = startingHealth;
+        }
     }
 
     public void TakeDamage(int amount)

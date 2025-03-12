@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System;
 
 public class NotifyLoadingGame : BaseNotify
 {
@@ -39,11 +37,34 @@ public class NotifyLoadingGame : BaseNotify
             loadingPercentText.SetText($"LOADING SCENES: {asyncOperation.progress * 100}%");
             if(asyncOperation.progress >= 0.9f)
             {
+                loadingSlider.value = 1f;
                 loadingPercentText.SetText("Press the space bar to continue");
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    asyncOperation.allowSceneActivation = true;
                     this.Hide();
+                    if (UIManager.HasInstance)
+                    {
+                        UIManager.Instance.ShowNotify<NotifyFade>();
+                        NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+                        if(notifyFade != null)
+                        {
+                            notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                                onDuringFade: () =>
+                                {
+                                    asyncOperation.allowSceneActivation = true;
+                                },
+                                onFinish: () =>
+                                {
+                                    if (GameManager.HasInstance)
+                                    {
+                                        UIManager.Instance.ShowScreen<ScreenGame>();
+                                        GameManager.Instance.StartGame();
+                                    }
+                                });
+                        }
+                    }
+
+
                 }
             }
             yield return null;

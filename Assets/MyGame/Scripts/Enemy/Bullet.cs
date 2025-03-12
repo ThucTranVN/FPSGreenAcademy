@@ -5,13 +5,17 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] GameObject explosionVFX;
-    [SerializeField] private float speed = 15f;
+    private float speed;
     private Rigidbody rb;
     private int damage;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (DataManager.HasInstance)
+        {
+            speed = DataManager.Instance.GetTurretBulletSpeed();
+        }
     }
 
     private void Start()

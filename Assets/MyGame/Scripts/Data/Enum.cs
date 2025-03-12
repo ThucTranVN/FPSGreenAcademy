@@ -9,5 +9,7 @@ public enum UIType
 public enum ListenType
 {
     ANY = 0,
-    UPDATE_COUNT_TEXT
+    UPDATE_AMMO,
+    UPDATE_ZOOM,
+    UPDATE_HEALTH
 }

@@ -13,12 +13,37 @@ public class GameManager : BaseManager<GameManager>
             if(scr != null)
             {
                 scr.AnimationLoaddingText();
-                scr.DoAnimationLoadingProgress(5, () =>
+                scr.DoAnimationLoadingProgress(DataManager.Instance.GetLoadingTime(), () =>
                 {
                     UIManager.Instance.ShowScreen<ScreenHome>();
                     scr.Hide();
                 });
             }
         }
+    }
+
+    public void StartGame()
+    {
+
+    }
+
+    public void PauseGame()
+    {
+
+    }
+
+    public void ResumeGame()
+    {
+
+    }
+
+    public void RestartGame()
+    {
+
+    }
+
+    public void EndGame()
+    {
+
     }
 }

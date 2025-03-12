@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] private float radius = 1.5f;
-    [SerializeField] private int damage = 3;
+    private float radius;
+    private int damage;
+
+    private void Awake()
+    {
+        if (DataManager.HasInstance)
+        {
+            radius = DataManager.Instance.GetExplosionRadius();
+            damage = DataManager.Instance.GetExplosionDamage();
+        }
+    }
 
     private void Start()
     {

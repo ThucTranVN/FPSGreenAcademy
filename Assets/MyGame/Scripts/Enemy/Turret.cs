@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    [SerializeField] GameObject turretBullet;
-    [SerializeField] Transform turretHead;
-    [SerializeField] Transform playerTargetPoint;
-    [SerializeField] Transform bulletSpawnPoint;
-    [SerializeField] float fireRate = 2f;
-    [SerializeField] int damage = 3;
+    [SerializeField] private GameObject turretBullet;
+    [SerializeField] private Transform turretHead;
+    [SerializeField] private Transform playerTargetPoint;
+    [SerializeField] private Transform bulletSpawnPoint;
+    private float fireRate;
+    private int damage;
 
     private PlayerHealth playerHealth;
+
+    private void Awake()
+    {
+        if (DataManager.HasInstance)
+        {
+            fireRate = DataManager.Instance.GetTurretFireRate();
+            damage = DataManager.Instance.GetTurretDamage();
+        }
+    }
 
     void Start()
     {

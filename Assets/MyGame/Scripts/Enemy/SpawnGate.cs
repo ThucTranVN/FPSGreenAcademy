@@ -5,10 +5,18 @@ using UnityEngine;
 public class SpawnGate : MonoBehaviour
 {
     [SerializeField] private GameObject robotPrefab;
-    [SerializeField] private float spawnTime = 5f;
     [SerializeField] private Transform spawnPoint;
 
+    private float spawnTime;
     private PlayerHealth playerHealth;
+
+    private void Awake()
+    {
+        if (DataManager.HasInstance)
+        {
+            spawnTime = DataManager.Instance.GetEnemySpawnTime();
+        }
+    }
 
     private void Start()
     {
