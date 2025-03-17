@@ -20,6 +20,7 @@ namespace StarterAssets
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
+		public Animator animator;
 
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
@@ -199,6 +200,9 @@ namespace StarterAssets
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 			}
 
+			bool isMoving = _input.move != Vector2.zero;
+			animator.SetBool("IsMoving", isMoving);
+
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 		}
@@ -269,5 +273,13 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+
+		public void PlayFootStepSE()
+        {
+            if (AudioManager.HasInstance)
+            {
+				AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
+            }
+        }
 	}
 }

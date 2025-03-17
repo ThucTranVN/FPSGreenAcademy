@@ -1,113 +1,129 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : BaseManager<AudioManager>
 {
-    public Sound[] backgroundMusic;
-    public Sound[] soundEffect;
+    private float bgmFadeSpeedRate = CONST.BGM_FADE_SPEED_RATE_HIGH;
 
-    private int currentPlayingBGMIndex = 999;
-    private bool shouldPlayBGM = false;
-    private float bgmVolume;
-    private float effectVolume;
+    //Background music name, sound effect name
+    private string nextBGMName;
+    private string nextSEName;
+
+    //Is the BGM fading out?
+    private bool isFadeOut = false;
+
+    //Audio sources for BGM and SE
+    public AudioSource AttachBGMSource;
+    public AudioSource AttachSESource;
+
+    //Keep all audio
+    private Dictionary<string, AudioClip> bgmDic, seDic;
 
     protected override void Awake()
     {
         base.Awake();
 
-        bgmVolume = PlayerPrefs.GetFloat("BGM", 0.75f);
-        effectVolume = PlayerPrefs.GetFloat("Effect", 0.75f);
+        //Load all SE & BGM files from resource folder
+        bgmDic = new Dictionary<string, AudioClip>();
+        seDic = new Dictionary<string, AudioClip>();
 
-        CreateAudioSource(backgroundMusic, bgmVolume);
-        CreateAudioSource(soundEffect, effectVolume);
-    }
+        object[] bgmList = Resources.LoadAll("Audio/BGM");
+        object[] seList = Resources.LoadAll("Audio/SE");
 
-    void Update() //for 1 bgm
-    {
-        if(currentPlayingBGMIndex !=999 && !backgroundMusic[currentPlayingBGMIndex].source.isPlaying)
+        foreach (AudioClip bgm in bgmList)
         {
-            currentPlayingBGMIndex++;
-            if(currentPlayingBGMIndex >= backgroundMusic.Length)
-            {
-                currentPlayingBGMIndex = 0;
-            }
-            backgroundMusic[currentPlayingBGMIndex].source.Play();
+            bgmDic[bgm.name] = bgm;
+        }
+
+        foreach (AudioClip se in seList)
+        {
+            seDic[se.name] = se;
         }
     }
 
-    private void CreateAudioSource(Sound[] sounds, float volume)
+    private void Start()
     {
-        foreach (Sound sound in sounds)//loop through each bgm/effect
-        {
-            sound.source = gameObject.AddComponent<AudioSource>();
-            sound.source.clip = sound.clip;
-            sound.source.volume = sound.volume * volume;
-            sound.source.pitch = sound.pitch;
-            sound.source.loop = sound.loop;
-        }
+        AttachBGMSource.volume = PlayerPrefs.GetFloat(CONST.BGM_VOLUME_KEY, CONST.BGM_VOLUME_DEFAULT);
+        AttachSESource.volume = PlayerPrefs.GetFloat(CONST.SE_VOLUME_KEY, CONST.SE_VOLUME_DEFAULT);
     }
 
-    public void PlayEffect(string name)
+    public void PlaySE(string seName, float delay = 0.0f)
     {
-        Sound effect = Array.Find(soundEffect, effect => effect.name == name);
-        if(effect == null)
+        if (!seDic.ContainsKey(seName))
         {
-            Debug.LogError("Unable to play effect " + name);
+            Debug.LogError(seName + " There is no SE named");
             return;
         }
-        effect.source.Play();
+
+        nextSEName = seName;
+        Invoke(nameof(DelayPlaySE), delay);
     }
 
-    public void PlayBackgroudMusic()
+    private void DelayPlaySE()
     {
-        if(shouldPlayBGM == false)
+        AttachSESource.PlayOneShot(seDic[nextSEName] as AudioClip);
+    }
+
+    public void PlayBGM(string bgmName, float fadeSpeedRate = CONST.BGM_FADE_SPEED_RATE_HIGH)
+    {
+        if (!bgmDic.ContainsKey(bgmName))
         {
-            shouldPlayBGM = true;
-            currentPlayingBGMIndex = UnityEngine.Random.Range(0, backgroundMusic.Length - 1);
-            backgroundMusic[currentPlayingBGMIndex].source.volume = backgroundMusic[currentPlayingBGMIndex].volume * bgmVolume;
-            backgroundMusic[currentPlayingBGMIndex].source.Play();
+            Debug.LogError(bgmName + " There is no BGM named");
+            return;
+        }
+
+        //BGM is not currently playing
+        if (!AttachBGMSource.isPlaying)
+        {
+            nextBGMName = "";
+            AttachBGMSource.clip = bgmDic[bgmName] as AudioClip;
+            AttachBGMSource.Play();
+        }
+        //BGM is playing
+        else if (AttachBGMSource.clip.name != bgmName)
+        {
+            nextBGMName = bgmName;
+            FadeOutBGM(fadeSpeedRate);
         }
     }
 
-    public void StopBackgroundMusic()
+    public void FadeOutBGM(float fadeSpeedRate = CONST.BGM_FADE_SPEED_RATE_LOW)
     {
-        if(shouldPlayBGM == true)
+        bgmFadeSpeedRate = fadeSpeedRate;
+        isFadeOut = true;
+    }
+
+    private void Update()
+    {
+        if (!isFadeOut)
         {
-            shouldPlayBGM = false;
-            currentPlayingBGMIndex = 999;
+            return;
         }
-    }
 
-    public string GetBGMName()
-    {
-        return backgroundMusic[currentPlayingBGMIndex].name;
-    }
-
-    public void SetBGMVolume(float volume)
-    {
-        foreach (Sound bgm in backgroundMusic)
+        //Gradually lower the volume, when the volume reaches 0 play the next BGM
+        AttachBGMSource.volume -= Time.deltaTime * bgmFadeSpeedRate;
+        if (AttachBGMSource.volume <= 0)
         {
-            float curBGMVolume = PlayerPrefs.GetFloat("BGM", 0.75f);
-            if(volume != curBGMVolume)
+            AttachBGMSource.Stop();
+            AttachBGMSource.volume = PlayerPrefs.GetFloat(CONST.BGM_VOLUME_KEY, CONST.BGM_VOLUME_DEFAULT);
+            isFadeOut = false;
+            if (!string.IsNullOrEmpty(nextBGMName))
             {
-                bgm.source.volume = volume;
-                PlayerPrefs.SetFloat("BGM", volume);
+                PlayBGM(nextBGMName);
             }
         }
     }
 
-    public void SetEffectVolume(float volume)
+    public void ChangeBGMVolume(float BGMVolume)
     {
-        float curEffectVolume = PlayerPrefs.GetFloat("Effect", 0.75f);
-        foreach (Sound effect in soundEffect)
-        {
-            if(volume != curEffectVolume)
-            {
-                effect.source.volume = volume;
-                PlayerPrefs.SetFloat("Effect", volume);
-            }
-        }
+        AttachBGMSource.volume = BGMVolume;
+        PlayerPrefs.SetFloat(CONST.BGM_VOLUME_KEY, BGMVolume);
+    }
+
+    public void ChangeSEVolume(float SEVolume)
+    {
+        AttachSESource.volume = SEVolume;
+        PlayerPrefs.SetFloat(CONST.SE_VOLUME_KEY, SEVolume);
     }
 }

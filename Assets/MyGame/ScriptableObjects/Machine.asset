@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde2d09f6925a47b0bd0272fc2dc3982, type: 3}
   m_Name: Machine
   m_EditorClassIdentifier: 
+  weaponType: 2
   weaponPrefab: {fileID: 8273644743996777733, guid: f7199c092a872495881dfac428fd1003,
     type: 3}
   Damage: 1

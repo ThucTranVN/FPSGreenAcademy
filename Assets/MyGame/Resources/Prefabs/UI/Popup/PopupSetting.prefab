@@ -1836,7 +1836,7 @@ GameObject:
   - component: {fileID: 5797031275650757275}
   - component: {fileID: 5797031275650757274}
   m_Layer: 5
-  m_Name: Slider15
+  m_Name: BgmSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2955,7 +2955,7 @@ GameObject:
   - component: {fileID: 5797031276022614602}
   - component: {fileID: 5797031276022614601}
   m_Layer: 5
-  m_Name: Slider15
+  m_Name: SeSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

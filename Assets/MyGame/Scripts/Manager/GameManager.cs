@@ -24,7 +24,10 @@ public class GameManager : BaseManager<GameManager>
 
     public void StartGame()
     {
-
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);
+        }
     }
 
     public void PauseGame()

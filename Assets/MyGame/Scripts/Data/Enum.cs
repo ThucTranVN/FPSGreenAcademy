@@ -13,3 +13,11 @@ public enum ListenType
     UPDATE_ZOOM,
     UPDATE_HEALTH
 }
+
+public enum WeaponType
+{
+    Unknow = 0,
+    Pistol = 1,
+    Riffle = 2,
+    Sniper = 3
+}
