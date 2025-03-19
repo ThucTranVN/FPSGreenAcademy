@@ -5,6 +5,8 @@
 	  public const string BGM_BGM_3 = "bgm_3";
 	  public const string BGM_BMG_4 = "bmg_4";
 	
+	  public const string SE_BTNCLICK = "BtnClick";
+	  public const string SE_BTNHOVER = "BtnHover";
 	  public const string SE_FOOTSTEP = "FootStep";
 	  public const string SE_PISTOLSHOT = "PistolShot";
 	  public const string SE_RIFLESHOT = "RifleShot";

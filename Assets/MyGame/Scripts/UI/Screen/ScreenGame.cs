@@ -34,6 +34,11 @@ public class ScreenGame : BaseScreen
     public override void Show(object data)
     {
         base.Show(data);
+
+        foreach (var item in shieldBars)
+        {
+            item.gameObject.SetActive(true);
+        }
     }
 
     private void OnUpdateAmmoEvent(object value)

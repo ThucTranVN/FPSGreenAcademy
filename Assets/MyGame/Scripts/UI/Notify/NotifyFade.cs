@@ -34,6 +34,7 @@ public class NotifyFade : BaseNotify
         seq.OnComplete(() =>
         {
             onFinish?.Invoke();
+            this.Hide();
         });
     }
 

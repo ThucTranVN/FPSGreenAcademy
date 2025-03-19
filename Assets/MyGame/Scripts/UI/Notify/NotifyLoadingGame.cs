@@ -17,7 +17,8 @@ public class NotifyLoadingGame : BaseNotify
 
     public override void Show(object data)
     {
-        base.Show(data); 
+        base.Show(data);
+        StartCoroutine(LoadScene());
     }
 
     public override void Hide()
@@ -29,7 +30,7 @@ public class NotifyLoadingGame : BaseNotify
     {
         yield return null;
 
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Main");
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
         asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)
         {

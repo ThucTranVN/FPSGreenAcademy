@@ -1,10 +1,15 @@
 using UnityEngine;
 using Cinemachine;
+using StarterAssets;
+using DG.Tweening;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera deathVirtualCamera;
     [SerializeField] Transform weaponCamera;
+    [SerializeField] StarterAssetsInputs input;
+    [SerializeField] ActiveWeapon activeWeapon;
+
     private int deathCameraPriority;
 
     private int currentHealth;
@@ -16,6 +21,8 @@ public class PlayerHealth : MonoBehaviour
             currentHealth = DataManager.Instance.GetStartingHealth();
             deathCameraPriority = DataManager.Instance.GetDeathCameraPriority();
         }
+
+        input = GetComponent<StarterAssetsInputs>();
     }
 
     private void Start()
@@ -39,7 +46,17 @@ public class PlayerHealth : MonoBehaviour
         {
             weaponCamera.parent = null;
             deathVirtualCamera.Priority = deathCameraPriority;
-            Destroy(this.gameObject);
+            input.cursorLocked = false;
+            input.cursorInputForLook = false;
+            activeWeapon.gameObject.SetActive(false);
+
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                if (GameManager.HasInstance)
+                {
+                    GameManager.Instance.GameOver();
+                }
+            });
         }
     }
 }

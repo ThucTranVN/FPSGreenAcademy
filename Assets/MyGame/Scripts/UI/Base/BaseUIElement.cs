@@ -46,4 +46,20 @@ public class BaseUIElement : MonoBehaviour
             CanvasGroup.alpha = isActive ? 1 : 0;
         }
     }
+
+    public virtual void OnPlaySoundClickButton()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_BTNCLICK);
+        }
+    }
+
+    public virtual void OnPlaySoundHoverButton()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_BTNHOVER);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
@@ -48,5 +49,38 @@ public class GameManager : BaseManager<GameManager>
     public void EndGame()
     {
 
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        if (UIManager.HasInstance)
+        {
+            string txtMessage = "You Loose \n<size=50><#667986>Try again later";
+
+            PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            {
+                Time.timeScale = 1;
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                screenGame.Hide();
+
+                UIManager.Instance.ShowNotify<NotifyFade>();
+                NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+                if (notifyFade != null)
+                {
+                    notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                        onDuringFade: () =>
+                        {
+                            SceneManager.UnloadSceneAsync("Main");
+                        },
+                        onFinish: () =>
+                        {
+                            UIManager.Instance.ShowScreen<ScreenHome>();
+                        });
+                }
+            });
+
+            UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+        }
     }
 }

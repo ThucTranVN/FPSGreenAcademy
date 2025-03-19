@@ -230,10 +230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFollowCamera: {fileID: 0}
   weaponCamera: {fileID: 9035507154564228968}
-  zoomUI: {fileID: 0}
   startingWeaponSO: {fileID: 11400000, guid: 0a39948a94bb04c248f54582194961de, type: 2}
   animator: {fileID: 0}
-  ammoText: {fileID: 0}
 --- !u!1 &5806718847445234554
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +247,7 @@ GameObject:
   - component: {fileID: 468744521031587607}
   - component: {fileID: 1994103330828262093}
   - component: {fileID: 6263712572213848323}
+  - component: {fileID: 4170302851258655770}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -315,6 +314,7 @@ MonoBehaviour:
   SprintSpeed: 6
   RotationSpeed: 4
   SpeedChangeRate: 10
+  animator: {fileID: 4170302851258655770}
   JumpHeight: 1.2
   Gravity: -15
   JumpTimeout: 0.1
@@ -477,21 +477,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8674ed21304214d7dacb075441814ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 7
   deathVirtualCamera: {fileID: 0}
   weaponCamera: {fileID: 641564264872007305}
-  deathCameraPriority: 20
-  shieldBars:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  input: {fileID: 0}
+  activeWeapon: {fileID: 3722594312850764940}
+--- !u!95 &4170302851258655770
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5806718847445234554}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9d3bd294a50e548bcaebeaa360ee1d3a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7087481858559010968
 GameObject:
   m_ObjectHideFlags: 0
