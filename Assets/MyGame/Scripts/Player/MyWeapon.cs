@@ -9,8 +9,11 @@ public class MyWeapon : MonoBehaviour
     [SerializeField] private ParticleSystem muzzleFlashFx;
     [SerializeField] float maxDistance = 500f;
     [SerializeField] LayerMask interactLayer;
+    [SerializeField] private Transform firePoint;
 
     private CinemachineImpulseSource impulseSource;
+
+    private Vector3 hitPoint;
 
     private void Awake()
     {
@@ -23,13 +26,19 @@ public class MyWeapon : MonoBehaviour
         muzzleFlashFx.Play();
         impulseSource.GenerateImpulse();
         PlayShootSE(weaponSO);
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, maxDistance, interactLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxDistance, interactLayer, QueryTriggerInteraction.Ignore))
         {
             //Debug.Log($"Raycast hit: {hit.collider.name}");
             Instantiate(weaponSO.HitVFXPrefab, hit.point, Quaternion.identity);
             MyEnemyHealth enemyHealth = hit.collider.GetComponent<MyEnemyHealth>();
             enemyHealth?.TakeDamage(weaponSO.Damage);
         }
+    }
+
+    private void Update()
+    {
+        Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hitTest, maxDistance, interactLayer, QueryTriggerInteraction.Ignore);
+        hitPoint = hitTest.point;
     }
 
     private void PlayShootSE(WeaponSO weaponSO)
@@ -49,5 +58,11 @@ public class MyWeapon : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(hitPoint, 1);
     }
 }

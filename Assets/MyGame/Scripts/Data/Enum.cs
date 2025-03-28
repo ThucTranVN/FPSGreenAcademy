@@ -11,7 +11,8 @@ public enum ListenType
     ANY = 0,
     UPDATE_AMMO,
     UPDATE_ZOOM,
-    UPDATE_HEALTH
+    UPDATE_HEALTH,
+    UPDATE_MISSION
 }
 
 public enum WeaponType

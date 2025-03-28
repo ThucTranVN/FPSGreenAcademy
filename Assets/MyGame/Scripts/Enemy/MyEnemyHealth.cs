@@ -29,6 +29,10 @@ public class MyEnemyHealth : MonoBehaviour
 
     public void SelfDestroy()
     {
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.CountEnemyDeath();
+        }
         Instantiate(robotExplosionVFX, vfxPos.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

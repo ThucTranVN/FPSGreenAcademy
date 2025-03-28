@@ -29,6 +29,13 @@ public class GameManager : BaseManager<GameManager>
         {
             AudioManager.Instance.PlayBGM(AUDIO.BGM_BMG_4);
         }
+
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
+        }
     }
 
     public void PauseGame()
@@ -81,6 +88,49 @@ public class GameManager : BaseManager<GameManager>
             });
 
             UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+        }
+
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
+        }
+    }
+
+    public void WinGame()
+    {
+        Time.timeScale = 0;
+        if (UIManager.HasInstance)
+        {
+            string txtMessage = "Congratulation\n<size=50><#667986>You win!!!";
+
+            PopupShowMessageData data = new PopupShowMessageData(txtMessage, () =>
+            {
+                Time.timeScale = 1;
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                screenGame.Hide();
+
+                UIManager.Instance.ShowNotify<NotifyFade>();
+                NotifyFade notifyFade = UIManager.Instance.GetExistNotify<NotifyFade>();
+                if (notifyFade != null)
+                {
+                    notifyFade.Fade(DataManager.Instance.GetFadeTime(),
+                        onDuringFade: () =>
+                        {
+                            SceneManager.UnloadSceneAsync("Main");
+                        },
+                        onFinish: () =>
+                        {
+                            UIManager.Instance.ShowScreen<ScreenHome>();
+                        });
+                }
+            });
+
+            UIManager.Instance.ShowPopup<PopupShowMessage>(data, forceShowData: true);
+        }
+
+        if (MissionManager.HasInstance)
+        {
+            MissionManager.Instance.ResetMission();
         }
     }
 }
