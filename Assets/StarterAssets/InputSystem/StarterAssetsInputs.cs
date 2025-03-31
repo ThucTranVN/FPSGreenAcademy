@@ -22,6 +22,29 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+        private void Start()
+        {
+            if (ListenerManager.HasInstance)
+            {
+				ListenerManager.Instance.Register(ListenType.ON_WIN_GAME, OnWinGame);
+            }
+        }
+
+        private void OnDestroy()
+        {
+			if (ListenerManager.HasInstance)
+			{
+				ListenerManager.Instance.Unregister(ListenType.ON_WIN_GAME, OnWinGame);
+			}
+		}
+
+		private void OnWinGame(object value)
+        {
+			cursorLocked = false;
+			cursorInputForLook = false;
+			Cursor.lockState = CursorLockMode.None;
+		}
+
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
 		{

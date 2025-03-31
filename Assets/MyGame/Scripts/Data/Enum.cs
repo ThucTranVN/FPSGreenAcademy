@@ -12,7 +12,9 @@ public enum ListenType
     UPDATE_AMMO,
     UPDATE_ZOOM,
     UPDATE_HEALTH,
-    UPDATE_MISSION
+    UPDATE_MISSION,
+    UPDATE_COUNT_ENEMY,
+    ON_WIN_GAME
 }
 
 public enum WeaponType

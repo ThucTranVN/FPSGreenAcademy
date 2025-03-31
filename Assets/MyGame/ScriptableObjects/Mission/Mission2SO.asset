@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionName: Wave 2
   IsComplete: 0
-  TotalEnemy: 15
+  TotalEnemy: 2
   SpawnTime: 2

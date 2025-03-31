@@ -98,6 +98,11 @@ public class GameManager : BaseManager<GameManager>
 
     public void WinGame()
     {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.ON_WIN_GAME);
+        }
+
         Time.timeScale = 0;
         if (UIManager.HasInstance)
         {

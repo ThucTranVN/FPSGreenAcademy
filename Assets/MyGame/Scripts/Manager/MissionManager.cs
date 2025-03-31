@@ -11,6 +11,7 @@ public class MissionManager : BaseManager<MissionManager>
     public MissionSO CurrentMission => currentMission;
 
     private int missionIndex = 0;
+    public int MissionIndex => missionIndex;
 
     private int enemyDeadCount;
 
@@ -30,6 +31,7 @@ public class MissionManager : BaseManager<MissionManager>
             {
                 missionIndex++;
                 currentMission = MissionData[missionIndex];
+                enemyDeadCount = 0;
 
                 if (ListenerManager.HasInstance)
                 {
@@ -54,6 +56,11 @@ public class MissionManager : BaseManager<MissionManager>
     public void CountEnemyDeath()
     {
         enemyDeadCount++;
+
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ENEMY, enemyDeadCount);
+        }
 
         if(enemyDeadCount >= currentMission.TotalEnemy)
         {
