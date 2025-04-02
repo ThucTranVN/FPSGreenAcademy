@@ -24,3 +24,11 @@ public enum WeaponType
     Riffle = 2,
     Sniper = 3
 }
+
+public enum AIStateID
+{
+    Idle,
+    ChasePlayer,
+    Attack,
+    Death
+}
