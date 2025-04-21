@@ -10,6 +10,7 @@ public class AIAgent : MonoBehaviour
     public NavMeshAgent NavMeshAgent;
     public Animator Animator;
     public Transform PlayerTransform;
+    public GameObject test;
 
 
     // Start is called before the first frame update
